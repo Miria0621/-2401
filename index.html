@@ -1,0 +1,284 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>保密技术2401班信息查询</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: "Microsoft YaHei", sans-serif;
+        }
+
+        /* 整体绿色主题 */
+        :root {
+            --main-green: #2E8B57;
+            --light-green: #E6F4EA;
+            --dark-green: #1F5F42;
+            --white: #ffffff;
+            --gray: #f5f5f5;
+            --border: #d0e6d4;
+        }
+
+        body {
+            background-color: var(--light-green);
+            display: flex;
+            min-height: 100vh;
+        }
+
+        /* 左侧菜单栏 */
+        .sidebar {
+            width: 240px;
+            background-color: var(--main-green);
+            color: white;
+            padding: 20px 0;
+            position: fixed;
+            height: 100vh;
+            box-shadow: 2px 0 5px rgba(0,0,0,0.1);
+        }
+
+        .sidebar h2 {
+            text-align: center;
+            margin-bottom: 30px;
+            font-size: 18px;
+            padding: 0 10px;
+        }
+
+        .menu-item {
+            padding: 15px 25px;
+            cursor: pointer;
+            transition: 0.3s;
+            font-size: 16px;
+        }
+
+        .menu-item:hover, .menu-item.active {
+            background-color: var(--dark-green);
+            padding-left: 35px;
+        }
+
+        /* 右侧主内容区 */
+        .content {
+            flex: 1;
+            margin-left: 240px;
+            padding: 30px;
+        }
+
+        .page-title {
+            font-size: 26px;
+            color: var(--dark-green);
+            margin-bottom: 25px;
+            border-left: 6px solid var(--main-green);
+            padding-left: 15px;
+        }
+
+        .card {
+            background: var(--white);
+            border-radius: 10px;
+            padding: 25px;
+            margin-bottom: 20px;
+            box-shadow: 0 2px 8px rgba(0,100,0,0.05);
+        }
+
+        /* 表格样式 */
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 15px;
+        }
+
+        th, td {
+            padding: 12px;
+            text-align: center;
+            border: 1px solid var(--border);
+        }
+
+        th {
+            background-color: var(--main-green);
+            color: white;
+        }
+
+        tr:nth-child(even) {
+            background-color: var(--light-green);
+        }
+
+        /* 按钮 */
+        .btn {
+            background-color: var(--main-green);
+            color: white;
+            border: none;
+            padding: 8px 16px;
+            border-radius: 5px;
+            cursor: pointer;
+            margin: 5px;
+            transition: 0.2s;
+        }
+
+        .btn:hover {
+            background-color: var(--dark-green);
+        }
+
+        /* 聊天区域 */
+        .chat-box {
+            height: 400px;
+            overflow-y: auto;
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            padding: 15px;
+            background: white;
+            margin-bottom: 15px;
+        }
+
+        .chat-input {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            resize: none;
+            outline-color: var(--main-green);
+        }
+
+        /* 上传区域 */
+        .upload-area {
+            border: 2px dashed var(--main-green);
+            padding: 40px;
+            text-align: center;
+            border-radius: 10px;
+            margin: 20px 0;
+            background: white;
+        }
+
+        /* 页面切换 */
+        .page {
+            display: none;
+        }
+
+        .page.show {
+            display: block;
+        }
+    </style>
+</head>
+<body>
+
+<!-- 左侧菜单栏 -->
+<div class="sidebar">
+    <h2>保密技术2401班</h2>
+    <div class="menu-item active" onclick="showPage('info')">👥 班级成员信息</div>
+    <div class="menu-item" onclick="showPage('score')">📊 学期/综测成绩</div>
+    <div class="menu-item" onclick="showPage('chat')">💬 千锤万凿</div>
+    <div class="menu-item" onclick="showPage('task')">📝 学术任务</div>
+</div>
+
+<!-- 右侧内容区 -->
+<div class="content">
+
+    <!-- 1. 班级成员信息 -->
+    <div id="info" class="page show">
+        <div class="page-title">班级成员基础信息</div>
+        <div class="card">
+            <table>
+                <tr>
+                    <th>姓名</th>
+                    <th>学号</th>
+                    <th>电话号码</th>
+                    <th>QQ号</th>
+                </tr>
+                <tr><td>张三</td><td>202401001</td><td>13800138001</td><td>12345678</td></tr>
+                <tr><td>李四</td><td>202401002</td><td>13800138002</td><td>87654321</td></tr>
+                <tr><td>王五</td><td>202401003</td><td>13800138003</td><td>11223344</td></tr>
+                <tr><td>赵六</td><td>202401004</td><td>13800138004</td><td>44332211</td></tr>
+            </table>
+        </div>
+    </div>
+
+    <!-- 2. 成绩查询与下载 -->
+    <div id="score" class="page">
+        <div class="page-title">期末成绩 & 综测成绩</div>
+        <div class="card">
+            <h3>📕 第一学期期末成绩</h3>
+            <button class="btn" onclick="downloadDoc('期末成绩表.xlsx')">下载文档</button>
+            <table>
+                <tr><th>姓名</th><th>高数</th><th>英语</th><th>思修</th><th>计算机</th></tr>
+                <tr><td>张三</td><td>92</td><td>88</td><td>90</td><td>95</td></tr>
+                <tr><td>李四</td><td>85</td><td>90</td><td>87</td><td>91</td></tr>
+            </table>
+        </div>
+
+        <div class="card">
+            <h3>🎯 学年综测成绩</h3>
+            <button class="btn" onclick="downloadDoc('综测成绩表.xlsx')">下载文档</button>
+            <table>
+                <tr><th>姓名</th><th>智育</th><th>德育</th><th>体育</th><th>总分</th></tr>
+                <tr><td>张三</td><td>90</td><td>95</td><td>88</td><td>91</td></tr>
+                <tr><td>李四</td><td>86</td><td>92</td><td>90</td><td>89</td></tr>
+            </table>
+        </div>
+    </div>
+
+    <!-- 3. 学习讨论区：千锤万凿 -->
+    <div id="chat" class="page">
+        <div class="page-title">千锤万凿 — 学习讨论区</div>
+        <div class="card">
+            <div class="chat-box" id="chatBox">
+                <p><strong>系统：</strong>欢迎来到学习讨论区，自由发言交流～</p>
+            </div>
+            <textarea class="chat-input" rows="3" placeholder="在这里输入你的想法..." id="msgInput"></textarea>
+            <button class="btn" onclick="sendMsg()" style="margin-top:10px">发送消息</button>
+        </div>
+    </div>
+
+    <!-- 4. 学术任务：作业上传 -->
+    <div id="task" class="page">
+        <div class="page-title">学术任务 — 作业上传</div>
+        <div class="card">
+            <p>支持上传：文档、图片、压缩包、文字等任意格式作业</p>
+            <div class="upload-area">
+                <input type="file" id="fileUpload" multiple style="font-size:16px">
+                <p style="margin-top:15px">点击或拖拽文件至此处上传</p>
+            </div>
+            <button class="btn" onclick="submitTask()">提交作业</button>
+        </div>
+    </div>
+
+</div>
+
+<script>
+    // 页面切换
+    function showPage(id) {
+        document.querySelectorAll('.page').forEach(p => p.classList.remove('show'));
+        document.querySelectorAll('.menu-item').forEach(m => m.classList.remove('active'));
+        document.getElementById(id).classList.add('show');
+        event.target.classList.add('active');
+    }
+
+    // 下载成绩文档
+    function downloadDoc(filename) {
+        alert("已开始下载：" + filename);
+    }
+
+    // 发送聊天消息
+    function sendMsg() {
+        let input = document.getElementById("msgInput");
+        let msg = input.value.trim();
+        if (!msg) return;
+        let box = document.getElementById("chatBox");
+        let time = new Date().toLocaleTimeString();
+        box.innerHTML += `<p><strong>我 ${time}：</strong>${msg}</p>`;
+        input.value = "";
+        box.scrollTop = box.scrollHeight;
+    }
+
+    // 提交作业
+    function submitTask() {
+        let file = document.getElementById("fileUpload").files;
+        if (file.length === 0) {
+            alert("请先选择要上传的文件！");
+            return;
+        }
+        alert("作业提交成功！");
+    }
+</script>
+
+</body>
+</html>
